@@ -22,4 +22,12 @@
     <color name="theme_primary_dark">#04561A</color>
     <color name="theme_accent">#04561A</color>
     <color name="ltgray">#ffe0e0e0</color>
+
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="movieTitleBackGroundColor">#349987</color>
+    <color name="movieTitleTextColor">#ffffff</color>
+    <color name="buttonBackgroundColor">#95E7DA</color>
+    <color name="buttonBackgroundColorDeleteFavourite">#F68383</color>
 </resources>
