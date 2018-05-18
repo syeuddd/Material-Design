@@ -39,7 +39,9 @@ public class ArticleDetailActivity extends ActionBarActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarFragment);
         setSupportActionBar(toolbar);
 
-        setTitle("This is a test");
+
+
+        //       setTitle("This is a test");
 
         mPagerAdapter = new MyPagerAdapter(getFragmentManager());
         mPager = (ViewPager) findViewById(R.id.pager);
@@ -118,6 +120,8 @@ public class ArticleDetailActivity extends ActionBarActivity
             super.setPrimaryItem(container, position, object);
             ArticleDetailFragment fragment = (ArticleDetailFragment) object;
             if (fragment != null) {
+
+
 
             }
         }

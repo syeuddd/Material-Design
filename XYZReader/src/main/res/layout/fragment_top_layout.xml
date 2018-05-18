@@ -13,22 +13,20 @@
         android:layout_height="180dp"
         android:fitsSystemWindows="true"
         android:background="@color/movieTitleBackGroundColor"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-        <!--android:theme="@style/AppTheme.AppBarOverlay">-->
+        android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
-            app:contentScrim="?attr/colorPrimary"
             app:expandedTitleMarginStart="48dp"
             app:expandedTitleMarginEnd="64dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
 
                 <RelativeLayout
                     android:id="@+id/meta_bar"
