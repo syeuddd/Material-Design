@@ -1,61 +1,84 @@
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="200dp">
+    android:layout_height="200dp"
+    android:layout_marginLeft="4dp"
+    android:layout_marginRight="4dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?selectableItemBackground">
+
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp">
+        android:layout_height="match_parent">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="200dp">
+        <!--<com.example.xyzreader.ui.DynamicHeightNetworkImageView-->
+        <!--android:id="@+id/thumbnail"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="200dp"-->
+        <!--android:cropToPadding="false"-->
+        <!--android:elevation="4dp"-->
+        <!--android:scaleType="fitXY"-->
+        <!--android:src="@drawable/urban"-->
+        <!--/>-->
 
         <ImageView
             android:id="@+id/thumbnail"
             android:layout_width="match_parent"
             android:layout_height="200dp"
+            android:cropToPadding="false"
+            android:elevation="4dp"
             android:scaleType="centerCrop"
-            tools:src="@drawable/urban"
-            android:background="@color/photo_placeholder" />
-
-
-
-        <TextView
-            android:id="@+id/article_subtitle"
-            android:layout_alignParentBottom="true"
-            style="@style/TextAppearance.AppCompat.Body1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:paddingBottom="16dp"
-            android:textColor="#ffffff"
-            android:maxLines="2"
-            android:ellipsize="end"
-            tools:text="this is a subtitle"
+            android:src="@drawable/urban"
+            android:foreground="?android:attr/selectableItemBackground"
             />
 
+    </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="bottom">
+
+
             <TextView
-                android:id="@+id/article_title_main"
-                android:padding="8dp"
+                android:id="@+id/article_title"
                 style="@style/TextAppearance.AppCompat.Subhead"
-                android:layout_above="@id/article_subtitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingLeft="16dp"
                 android:paddingTop="16dp"
                 android:paddingRight="16dp"
                 android:paddingBottom="4dp"
-                android:ellipsize="end"
-                android:maxLines="4"
                 android:textColor="#ffffff"
+                android:ellipsize="end"
+                android:maxLines="1"
                 tools:text="This is a sample title"
                 />
 
-        </RelativeLayout>
-    </FrameLayout>
+            <TextView
+                android:id="@+id/article_subtitle"
+                style="@style/TextAppearance.AppCompat.Body1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingBottom="16dp"
+                android:textColor="#ffffff"
+                android:maxLines="2"
+                android:ellipsize="end"
+                tools:text="This is a sample sub"
+                />
+        </LinearLayout>
+
+
+
 
 </android.support.v7.widget.CardView>

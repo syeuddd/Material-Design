@@ -23,8 +23,8 @@
     <color name="theme_accent">#04561A</color>
     <color name="ltgray">#ffe0e0e0</color>
 
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimary">#00BCD4</color>
+    <color name="colorPrimaryDark">#0097A7</color>
     <color name="colorAccent">#FF4081</color>
     <color name="movieTitleBackGroundColor">#349987</color>
     <color name="movieTitleTextColor">#ffffff</color>

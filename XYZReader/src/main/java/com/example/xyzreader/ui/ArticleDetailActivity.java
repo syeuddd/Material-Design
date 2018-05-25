@@ -5,10 +5,11 @@ import android.app.FragmentManager;
 import android.app.LoaderManager;
 import android.content.Loader;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.ViewGroup;
 
@@ -19,7 +20,7 @@ import com.example.xyzreader.data.ItemsContract;
 /**
  * An activity representing a single Article detail screen, letting you swipe between articles.
  */
-public class ArticleDetailActivity extends ActionBarActivity
+public class ArticleDetailActivity extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private Cursor mCursor;
@@ -39,24 +40,15 @@ public class ArticleDetailActivity extends ActionBarActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarFragment);
         setSupportActionBar(toolbar);
 
-
-
-        //       setTitle("This is a test");
-
         mPagerAdapter = new MyPagerAdapter(getFragmentManager());
         mPager = (ViewPager) findViewById(R.id.pager);
+
         mPager.setAdapter(mPagerAdapter);
-//        mPager.setPageMargin((int) TypedValue
-//                .applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, getResources().getDisplayMetrics()));
-//        mPager.setPageMarginDrawable(new ColorDrawable(0x22000000));
 
         mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageScrollStateChanged(int state) {
                 super.onPageScrollStateChanged(state);
-//                mUpButton.animate()
-//                        .alpha((state == ViewPager.SCROLL_STATE_IDLE) ? 1f : 0f)
-//                        .setDuration(300);
             }
 
             @Override
@@ -64,14 +56,13 @@ public class ArticleDetailActivity extends ActionBarActivity
                 if (mCursor != null) {
                     mCursor.moveToPosition(position);
                 }
-
-  //              updateUpButtonPosition();
             }
         });
 
         if (savedInstanceState == null) {
             if (getIntent() != null && getIntent().getData() != null) {
-                mStartId = ItemsContract.Items.getItemId(getIntent().getData());
+                Uri uri = getIntent().getData();
+                mStartId = ItemsContract.Items.getItemId(uri);
 
             }
         }
@@ -101,6 +92,7 @@ public class ArticleDetailActivity extends ActionBarActivity
             }
             mStartId = 0;
         }
+        mPager.setAdapter(mPagerAdapter);
     }
 
     @Override
@@ -115,21 +107,18 @@ public class ArticleDetailActivity extends ActionBarActivity
             super(fm);
         }
 
-        @Override
-        public void setPrimaryItem(ViewGroup container, int position, Object object) {
-            super.setPrimaryItem(container, position, object);
-            ArticleDetailFragment fragment = (ArticleDetailFragment) object;
-            if (fragment != null) {
-
-
-
-            }
-        }
 
         @Override
         public Fragment getItem(int position) {
             mCursor.moveToPosition(position);
+            long id = mCursor.getLong(ArticleLoader.Query._ID);
             return ArticleDetailFragment.newInstance(mCursor.getLong(ArticleLoader.Query._ID));
+
+        }
+
+        @Override
+        public void setPrimaryItem(ViewGroup container, int position, Object object) {
+            super.setPrimaryItem(container, position, object);
         }
 
         @Override

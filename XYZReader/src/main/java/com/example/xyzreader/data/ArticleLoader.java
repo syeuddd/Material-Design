@@ -12,6 +12,8 @@ public class ArticleLoader extends CursorLoader {
         return new ArticleLoader(context, ItemsContract.Items.buildDirUri());
     }
 
+
+
     public static ArticleLoader newInstanceForItemId(Context context, long itemId) {
         return new ArticleLoader(context, ItemsContract.Items.buildItemUri(itemId));
     }
