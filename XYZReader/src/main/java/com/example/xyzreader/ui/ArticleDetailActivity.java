@@ -45,7 +45,7 @@ public class ArticleDetailActivity extends AppCompatActivity
 
         mPager.setAdapter(mPagerAdapter);
 
-        mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+        mPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageScrollStateChanged(int state) {
                 super.onPageScrollStateChanged(state);
@@ -65,9 +65,18 @@ public class ArticleDetailActivity extends AppCompatActivity
                 mStartId = ItemsContract.Items.getItemId(uri);
 
             }
+        }else {
+            mStartId = savedInstanceState.getLong("SELECTED_ID");
         }
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putLong("SELECTED_ID",mStartId);
+
+    }
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         return ArticleLoader.newAllArticlesInstance(this);
@@ -92,7 +101,6 @@ public class ArticleDetailActivity extends AppCompatActivity
             }
             mStartId = 0;
         }
-        mPager.setAdapter(mPagerAdapter);
     }
 
     @Override
@@ -126,4 +134,6 @@ public class ArticleDetailActivity extends AppCompatActivity
             return (mCursor != null) ? mCursor.getCount() : 0;
         }
     }
+
+
 }

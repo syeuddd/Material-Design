@@ -7,9 +7,12 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.Loader;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -48,13 +51,11 @@ public class ArticleListActivity extends AppCompatActivity implements
     private RecyclerView mRecyclerView;
     private SwipeRefreshLayout refreshLayout;
     private AppBarLayout appBarLayout;
-
     public static final String RECYCLER_STATE_KEY = "recycler_state_key";
     StaggeredGridLayoutManager sglm;
-
     Parcelable recyclerViewState;
-
     boolean isExpanded = true;
+    boolean isCurrentDeviceTablet;
 
 
 
@@ -71,12 +72,12 @@ public class ArticleListActivity extends AppCompatActivity implements
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         refreshLayout = (SwipeRefreshLayout)findViewById(R.id.swipe_refresh_layout);
-//        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-//            @Override
-//            public void onRefresh() {
-//                refresh();
-//            }
-//        });
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refresh();
+            }
+        });
         appBarLayout = (AppBarLayout)findViewById(R.id.app_bar);
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
@@ -92,12 +93,24 @@ public class ArticleListActivity extends AppCompatActivity implements
         getLoaderManager().initLoader(0, null, this);
 
         if (savedInstanceState == null) {
-            refresh();
+
+           refresh();
         }
+
+        if (getResources().getBoolean(R.bool.isTablet)){
+            isCurrentDeviceTablet = getResources().getBoolean(R.bool.isTablet);
+        }
+
     }
 
     private void refresh() {
-        startService(new Intent(this, UpdaterService.class));
+
+        if (checkInternetConnection()) {
+            startService(new Intent(this, UpdaterService.class));
+        }else {
+            refreshLayout.setRefreshing(false);
+        }
+
     }
 
     @Override
@@ -176,7 +189,12 @@ public class ArticleListActivity extends AppCompatActivity implements
         adapter.setHasStableIds(true);
         mRecyclerView.setAdapter(adapter);
         int columnCount = getResources().getInteger(R.integer.list_column_count);
-        sglm = new StaggeredGridLayoutManager(columnCount, StaggeredGridLayoutManager.VERTICAL);
+        if (!isCurrentDeviceTablet){
+            sglm = new StaggeredGridLayoutManager(columnCount, StaggeredGridLayoutManager.VERTICAL);
+        }else {
+            sglm = new StaggeredGridLayoutManager(3,StaggeredGridLayoutManager.VERTICAL);
+        }
+
         mRecyclerView.setLayoutManager(sglm);
     }
 
@@ -209,6 +227,7 @@ public class ArticleListActivity extends AppCompatActivity implements
                 public void onClick(View view) {
 
              long id = getItemId(vh.getAdapterPosition());
+             long currentPosition = vh.getAdapterPosition();
                     startActivity(new Intent(Intent.ACTION_VIEW,
                             ItemsContract.Items.buildItemUri(getItemId(vh.getAdapterPosition()))));
 
@@ -260,6 +279,7 @@ public class ArticleListActivity extends AppCompatActivity implements
             Picasso.get()
                     .load(url)
                     .into(holder.thumbnailView);
+            holder.thumbnailView.setContentDescription(mCursor.getString(ArticleLoader.Query.TITLE));
         }
 
         @Override
@@ -282,4 +302,19 @@ public class ArticleListActivity extends AppCompatActivity implements
             subtitleView = (TextView) view.findViewById(R.id.article_subtitle);
         }
     }
+
+    private boolean checkInternetConnection(){
+
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        NetworkInfo ni = cm.getActiveNetworkInfo();
+        if (ni == null || !ni.isConnected()) {
+
+            View view = findViewById(R.id.main_layout);
+            Snackbar.make(view,"No Internet Connection",Snackbar.LENGTH_SHORT).show();
+            return false;
+        }
+
+        return true;
+    }
+
 }
